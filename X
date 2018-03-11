@@ -1,0 +1,109 @@
+#--------------------------------#
+#                                #
+#       Only the template        #
+#                                #
+#--------------------------------#
+import random
+from tkinter import *
+from tkinter import messagebox
+from tkinter import ttk
+
+qt = ''
+while qt != "Y":
+    qt = input('Закрыть программу?(Y(yes)/N(no))")
+    print("Hey! I'm your assistant.")
+    print("My functionality: ")
+    print("[1] I can count the numbers, \n [2] I can play with you,"
+          "\n [3] I can count how many rudders you have in euros and dollars")
+    print("Выберите вариант действия(1, 2 или 3) ")
+    do = input()
+    if do == '1':
+        # ------------Calculator start--------------
+        root = Tk()
+        root.title("Calculator")
+        # ------------calculator logic--------------
+        def calc(key):
+            global memory
+            if key == "=":
+                # we exclude writing letters
+                str1 = "-+0123456789.*/"
+                if calc_entry.get()[0] not in str1:
+                    calc_entry.insert(END, "Error")
+                    messagebox.showerror("Error!", "Error")
+                # ------------------score------------------
+                try:
+                    result = eval(calc_entry.get())
+                    calc_entry.insert(END, "=" + str(result))
+                except:
+                    calc_entry.insert(END, "Error!")
+                    messagebox.showerror("Error!", "Error")
+            # -------------clear button---------------
+            elif key == "C":
+                calc_entry.delete(0, END)
+            # смена + на - и наоборот
+            elif key == "-/+":
+                if "=" in calc_entry.get():
+                    calc_entry.delete(0, END)
+                try:
+                    if calc_entry.get()[0] == "-":
+                        calc_entry.delete(0)
+                    else:
+                        calc_entry.insert(0, "-")
+                except IndexError:
+                    pass
+            else:
+                if "=" in calc_entry.get():
+                    calc_entry.delete(0, END)
+                calc_entry.insert(END, key)
+
+        # -------------------Buttons calculator---------------------
+        bott_ls = [
+            "7", "8", "9", "+", "*",
+            "4", "5", "6", "-", "/",
+            "1", "2", "3", "-/+", '=',
+            "0", ".", "C"
+        ]
+        r = 1
+        c = 0
+        for i in bott_ls:
+            rel = ""
+            cmd = lambda x=i: calc(x)
+            ttk.Button(root, text=i, command=cmd).grid(row=r, column=c)
+            c += 1
+            if c > 4:
+                c = 0
+                r += 1
+
+        calc_entry = Entry(root, width=33)
+        calc_entry.grid(row=0, column=0, columnspan=5)
+        root.mainloop()
+        # ------------End of calculator--------------------
+
+    elif do == "2":
+        # cubes
+        print("You have chosen the game mode")
+        print("At this point in the game mode there is one game it: a dice game")
+        cub = random.randint(1, 6)
+        cub2 = random.randint(1, 6)
+        if cub == cub2:
+            print("The numerical value of the cubes was equal")
+        elif cub > cub2:
+            print("Congratulations, you win!")
+        else:
+            print("No luck you lost :(")
+        # end
+
+    # Converter
+    elif do == "3":
+        oneusd = 59
+        oneeur = 67
+        eur = int(input("Enter the amount in euros"))
+        usd = int(input("Enter the amount in dollars "))
+        end = rub / oneeur
+        print("rubles: ", round(end, 2), " Euro: ", round(eur, 2))
+        end = rub / oneusd
+        print("rubles: ", round(end, 2), " dollars: ", round(usd, 2))
+
+    else:
+        print("Incorrectly selected variant of actions!")
+# end
